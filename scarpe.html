@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        img {
+            width: 150px !important;
+            height: 150px !important;
+        }
+    </style>
+    <script>
+        window.onload = gestoreLoad;
+ 
+ 
+        function gestoreLoad(){
+            var btn = document.getElementById("add");
+            btn.onclick = add;
+            var btn1 = document.getElementById("btn1");
+            btn1.onclick= ordina;
+            var buttonInserisci = document.getElementById("buttonInserisci");
+            buttonInserisci.onclick = aggiungiScarpe;
+ 
+            class scarpa {
+                constructor(marca, modello, prezzo, url, qnt){
+                    this.marca = marca;
+                    this.modello = modello;
+                    this.prezzo = prezzo;
+                    this.url = url;
+                    this.qnt = qnt;
+                }
+ 
+                setQuantità(nuovaQuantità) {
+                this.quantità = nuovaQuantità;
+            }
+
+
+            }
+ 
+ 
+ 
+            var listaScarpe = new Array();
+            var scarpa1 = new scarpa("Nike","Dunk",  120, "https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/99486859-0ff3-46b4-949b-2d16af2ad421/custom-nike-dunk-high-by-you-shoes.png", 30);
+            var scarpa2 = new scarpa("Vans","Skool",  90, "https://images.vans.com/is/image/VansEU/VN0009QCW00-ALT1?$PDP-MEDIA-SET-PREVIEW-RESOLUTION$", 70);
+            var scarpa3 = new scarpa("Puma","Vintage",  70, "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/399028/01/sv01/fnd/EEA/fmt/png/Sneakers-vintage-Easy-Rider", 100);
+            var scarpa4 = new scarpa("Converse","Womens",  60, "https://www.converse.com/dw/image/v2/BJJF_PRD/on/demandware.static/-/Sites-cnv-master-catalog-we/default/dwefe610c0/images/a_107/A07892C_A_107X1.jpg?sw=964", 100);
+            listaScarpe.push(scarpa1);
+            listaScarpe.push(scarpa2);
+            listaScarpe.push(scarpa3);
+            listaScarpe.push(scarpa4);
+            salva();
+            show();
+ 
+            for (var i = 0; i < listaScarpe.length; i++) {
+                var select = document.getElementById("selectModello");
+                var nuovaOpzione = document.createElement("option");
+                nuovaOpzione.value = listaScarpe[i].modello;
+                nuovaOpzione.text = listaScarpe[i].modello;
+                select.appendChild(nuovaOpzione);
+            }
+ 
+ 
+                function show(){
+                remove();
+                var nodo = document.getElementById("show");
+                listaScarpe = JSON.parse(localStorage.getItem('lista2'));
+                for (var i = 0; i < listaScarpe.length; i++){
+ 
+                var nuovoNodo = document.createElement("div");
+                nuovoNodo.className = "card m-3";
+ 
+                var nodoImmagine = document.createElement("img");
+                nodoImmagine.src = listaScarpe[i].url;
+                nodoImmagine.className = "card-img-top";
+                nodoImmagine.className += " mx-auto";
+                nuovoNodo.appendChild(nodoImmagine);
+ 
+                var nodoCardBody = document.createElement("div");
+                nodoCardBody.className = "card-body";
+                nuovoNodo.appendChild(nodoCardBody);
+ 
+                var nodoTitolo = document.createElement("h5");
+                nodoTitolo.className = "card-title";
+                nodoTitolo.textContent = listaScarpe[i].modello;
+                nodoCardBody.appendChild(nodoTitolo);
+ 
+                var nodoTesto = document.createElement("p");
+                nodoTesto.className = "card-text";
+                nodoTesto.textContent = "Marca: " + listaScarpe[i].marca;
+                nodoCardBody.appendChild(nodoTesto);
+                var nodoTesto1 = document.createElement("p");
+                nodoTesto1.className = "card-text";
+                nodoTesto1.textContent ="Prezzo: " + listaScarpe[i].prezzo;
+                nodoCardBody.appendChild(nodoTesto1);
+ 
+                var nodoTesto2 = document.createElement("p");
+                nodoTesto2.className = "card-text";
+                nodoTesto2.textContent ="Quantità disponibile: " + listaScarpe[i].qnt;
+                nodoCardBody.appendChild(nodoTesto2);
+ 
+                var nodoTesto3 = document.createElement("p");
+                nodoTesto3.className = "card-text";
+                nodoTesto3.textContent ="Selezionare quantità desiderata: ";
+                nodoCardBody.appendChild(nodoTesto3);
+ 
+                if (listaScarpe[i].qnt <= 3){
+                    var nodoTesto4 = document.createElement("p");
+                    nodoTesto4.className = "card-text";
+                    nodoTesto4.textContent ="Ne sono rimasti solo " + listaScarpe[i].qnt + " non fartelo scappare";
+                    nodoCardBody.appendChild(nodoTesto4);
+                }
+ 
+ 
+ 
+                var nodoNumber = document.createElement("input");
+                nodoNumber.type = "number";
+                nodoNumber.value = "0";
+                nodoNumber.id = listaScarpe[i].modello;
+ 
+                nodoCardBody.appendChild(nodoNumber);
+                nodo.appendChild(nuovoNodo);
+ 
+ 
+               }
+               }
+               function salva(){
+                localStorage.setItem('lista2', JSON.stringify(listaScarpe));
+            }
+ 
+            function remove(){
+                var nodo = document.getElementById("show");
+ 
+                while (nodo.firstChild) {
+ 
+                    nodo.removeChild(nodo.firstChild);
+                }
+            }
+ 
+            function removeAdd() {
+            var nodo = document.getElementById("selectModello");
+            while (nodo.firstChild) {
+                nodo.removeChild(nodo.firstChild);
+            }
+        }
+ 
+                function add(){
+ 
+                    var marca = document.getElementById("marca").value;
+                    var modello = document.getElementById("modello").value;
+                    var prezzo = document.getElementById("prezzo").value;
+                    var url = document.getElementById("url").value;
+                    var qnt = document.getElementById("qnt").value;
+ 
+                    var scarpa1 = new scarpa(marca, modello, prezzo, url, qnt);
+                    listaScarpe.push(scarpa1);
+                    console.log(listaScarpe);
+                    salva();
+                    show();
+ 
+                    removeAdd();
+                    for (var i = 0; i < listaScarpe.length; i++) {
+                        var select = document.getElementById("selectModello");
+                        var nuovaOpzione = document.createElement("option");
+                        nuovaOpzione.value = listaScarpe[i].modello;
+                        nuovaOpzione.text = listaScarpe[i].modello;
+                        select.appendChild(nuovaOpzione);
+                    }
+                    remove();
+ 
+                }
+ 
+                function ordina(){
+ 
+                    var listaScelte = new Array();
+                for (var i = 0; i < listaScarpe.length; i++){
+                   var valoreInput = document.getElementById(listaScarpe[i].modello).value;
+                   listaScelte.push(valoreInput);
+                }
+                var somma = 0;
+                var riepilogo = "Hai ordinato";
+                var nodo = document.getElementById("result");
+                nodo.textContent = riepilogo;
+                for (var i = 0; i < listaScarpe.length; i++){
+                    if (listaScelte[i] != "0") {
+                    // controllo se ci sono pezzi disponibili
+                    if (listaScarpe[i].qnt >= listaScelte[i]) {
+ 
+                    // vado a sttrarre il numero dei pezzi acuistati dell'articolo
+                    listaScarpe[i].qnt = listaScarpe[i].qnt-listaScelte[i];
+                    var nodoOrdine = document.createElement("p");
+                    nodoOrdine.textContent =  " n. " + listaScelte[i] + " "+ listaScarpe[i].modello;
+                    nodo.appendChild(nodoOrdine);
+                    somma += listaScarpe[i].prezzo * listaScelte[i];
+                    salva();
+                    show();
+                }
+ 
+                    else {var nodoOrdine = document.createElement("p");
+                    nodoOrdine.textContent =  " Prodotto non disponibile";
+                    nodo.appendChild(nodoOrdine);}
+ 
+                }}
+ 
+ 
+ 
+            var nodoPrezzo = document.createElement("h3");
+            nodoPrezzo.textContent = "Il totale da pagare è " + somma + " euro";
+            nodo.appendChild(nodoPrezzo);
+ 
+ 
+ 
+ 
+            }
+ 
+            function aggiungiScarpe() {
+            var modello = document.getElementById("selectModello").value;
+            var nuovaQuantità = parseInt(document.getElementById("quantitàAggiorna").value);
+           
+            for (var i = 0; i < listaScarpe.length; i++) {
+                if (listaScarpe[i].modello === modello) {
+                    listaScarpe[i].setQuantità(nuovaQuantità);
+                    salva();
+                    show();
+                    break;
+                }
+            }
+        }
+            }
+            </script>
+</head>
+<body>
+    <div id = "show" class = "card-group"></div>
+    <button id = "btn1">Ordina</button>
+    <div id = "result"></div>
+  <br>
+  <br>
+  <hr>
+  <hr>
+  Aggiungi scarpa
+  <br>
+    Inserisci la marca: <input type = "text" id = "marca"><br><br>
+    Inserisci il modello: <input type = "text" id = "modello"><br><br>
+    Inserisci il prezzo:<input type = "number" id = "prezzo"><br><br>
+    Inserisci l'url <input type = "text" id = "url"><br><br>
+    Inserisci quantità: <input type = "number" id = "qnt">
+ 
+  <button id = "add">Aggiungi</button>
+   <br>
+   <br>
+   <br>
+ 
+    Modifica la quantità
+    <br>
+    Scegli la scarpa
+    <select id ="selectModello"></select>
+    <br>
+    Inserisci la nuova quantità <input type="text" id="quantitàAggiorna">
+    <br>
+    <button id = "buttonInserisci">Inserisci</button>
+ 
+</body>
+</html>
